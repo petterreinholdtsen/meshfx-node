@@ -1,4 +1,8 @@
 meshfx-node
 ===========
 
-Mesh not setup using batman-adv
+Mesh node setup using batman-adv.
+
+https://github.com/petterreinholdtsen/meshfx-node
+
+Send patches to pere@hungry.com.

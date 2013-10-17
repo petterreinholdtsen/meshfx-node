@@ -1,0 +1,156 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          meshfx-node
+# Required-Start:    $local_fs $remote_fs $network
+# Required-Stop:     $local_fs $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Enable batman-adv based mesh node
+# Description:       Configure the first wifi network card found as a
+#                    batman-adv mesh node.
+### END INIT INFO
+#
+# Based on http://www.open-mesh.org/projects/batman-adv/wiki/Quick-start-guide
+# and http://freifunk.in-kiel.de/wiki/Eigenen_Rechner_in_das_Freifunk-Netz
+#
+# Set up bat0 network interface on Linux to join the mesh network in
+# Oslo, Norway by default.  The mesh setup can be adjusted by creating
+# /etc/default/batctl.
+
+# Exit on first error
+#set -e
+
+# Mesh definition
+ESSID=meshfx@hackeriet
+CELLID=02:BA:00:00:00:01
+CHANNEL=11
+FREQUENCY=2462
+
+# Ethernet bridge definition (bridged do bat0)
+BRIDGE=br-meshfx
+EIFACE=eth0
+
+if [ -e /etc/default/batctl ] ; then
+    . /etc/default/batctl
+fi
+
+install_dependencies() {
+    echo "info: installing dependencies"
+    apt-get update -qq
+    DEBIAN_FRONTEND=noninteractive \
+	apt-get install -qqy \
+	rfkill \
+	batctl \
+	wireless-tools \
+	bridge-utils 
+}
+
+first_wifi_interface() {
+    IFACE=$(ls -d /sys/class/net/*/wireless 2>/dev/null | sort | head -1|cut -d/ -f5)
+    if [ -z "$IFACE" ] ;then
+	IFACE=$(iwconfig 2>/dev/null | sort | awk '/IEEE 802/ {print $1; exit}')
+    fi
+    echo $IFACE
+}
+
+start() {
+    echo "info: enabling batman-adv mesh network $ESSID on $IFACE"
+    $NETWORKMANAGER stop
+    sleep 10
+
+    # Might have to re-enable wifi
+    rfkill unblock $(rfkill list|awk -F: '/phy/ {print $1}') || true
+
+    ifconfig $IFACE down
+    ifconfig $IFACE mtu 1528
+    iwconfig $IFACE enc off
+    iwconfig $IFACE mode ad-hoc essid $ESSID channel $CHANNEL
+    sleep 1
+    iwconfig $IFACE ap $CELLID
+  
+    modprobe batman-adv
+    batctl if add $IFACE
+    ifconfig $IFACE up
+    ifconfig bat0 up promisc
+    if [ "$EIFACE" ] ; then
+	ifconfig $EIFACE up promisc
+	brctl addbr $BRIDGE
+	brctl addif $BRIDGE bat0
+	brctl addif $BRIDGE $EIFACE
+    fi
+}
+
+stop() {
+    if [ "$EIFACE" ] ; then
+	brctl delif $BRIDGE bat0
+	brctl delif $BRIDGE $EIFACE
+	brctl delbr $BRIDGE
+	ifconfig $EIFACE down -promisc
+    fi
+
+    ifconfig bat0 down -promisc
+
+    if [ "$EIFACE" ] ; then
+	ifconfig $BRIDGE down || true
+    fi
+
+    batctl if del $IFACE
+    rmmod batman-adv
+    ifconfig $IFACE mtu 1500
+    iwconfig $IFACE mode managed
+
+    $NETWORKMANAGER restart
+}
+
+status() {
+    batctl o
+}
+
+IFACE=$(first_wifi_interface)
+
+# Work even if network-manager isn't installed
+if [ -e /etc/init.d/network-manager ] || [ -e /etc/init/network-manager ] ; then
+    NETWORKMANAGER="service network-manager"
+else
+    NETWORKMANAGER=true
+fi
+
+case "$1" in
+    setup)
+	install_dependencies
+	;;
+    start|stop|status)
+	$1
+	;;
+    force-reload)
+	;;
+    *)
+	echo "error: invalid parameter $1"
+	echo "usage: $0 {start|stop|status}"
+	exit 1
+	;;
+esac
+exit 0
+
+# Not sure if this approach will work, as batctl isn't called
+setup_debian() {
+    cat > /etc/network/interfaces <<EOF
+# Created by debian-edu-profile during the Debian installation.
+#
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+auto wlan0
+iface wlan0 inet static
+    address 192.168.1.1
+    netmask 255.255.255.0
+    wireless-channel $CHANNEL
+    wireless-essid $ESSID
+    wireless-mode ad-hoc
+    wireless-ap $CELLID
+EOF
+}
