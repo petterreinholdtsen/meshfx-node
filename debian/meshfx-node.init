@@ -54,6 +54,10 @@ first_wifi_interface() {
 }
 
 start() {
+    if [ -z "$IFACE" ] ; then
+	echo "error: unable to find wifi interface, not enabling batman-adv mesh"
+	return
+    fi
     echo "info: enabling batman-adv mesh network $ESSID on $IFACE"
     $NETWORKMANAGER stop
     sleep 10
@@ -81,6 +85,10 @@ start() {
 }
 
 stop() {
+    if [ -z "$IFACE" ] ; then
+	echo "error: unable to find wifi interface, not enabling batman-adv mesh"
+	return
+    fi
     if [ "$EIFACE" ] ; then
 	brctl delif $BRIDGE bat0
 	brctl delif $BRIDGE $EIFACE
