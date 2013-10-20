@@ -8,6 +8,7 @@ Standards-Version: 3.9.4
 Package: meshfx-node
 Architecture: all
 Depends: ${misc:Depends}
+ , net-tools
  , rfkill
  , batctl
  , wireless-tools
