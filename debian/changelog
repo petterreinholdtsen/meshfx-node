@@ -1,5 +1,5 @@
-meshfx-node (0.0.1) UNRELEASED; urgency=low
+meshfx-node (0.0.1) wheezy; urgency=low
 
   * Initial version, tested on Jessie.
 
- -- Petter Reinholdtsen <pere@debian.org>  Mon, 09 Sep 2013 19:50:35 +0200
+ -- Petter Reinholdtsen <pere@debian.org>  Sun, 20 Oct 2013 23:05:40 +0200
