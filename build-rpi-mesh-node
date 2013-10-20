@@ -1,0 +1,173 @@
+#!/bin/bash
+#
+# Set up a Raspberry Pi using Debian Jessie as a batman-adv mesh node.
+
+# Based on https://kmp.or.at/~klaus/raspberry/build_rpi_sd_card.sh
+
+# you need at least
+# apt-get install binfmt-support qemu qemu-user-static debootstrap kpartx lvm2 dosfstools
+
+deb_mirror="http://http.debian.net/debian"
+#deb_local_mirror="http://debian.kmp.or.at:3142/debian"
+
+bootsize="64MB"
+deb_release="jessie"
+
+device=$1
+buildenv="/root/rpi"
+rootfs="${buildenv}/rootfs"
+bootfs="${rootfs}/boot"
+
+mydate=`date +%Y%m%d`
+
+exec < /dev/null
+LC_ALL=C
+export LC_ALL
+
+if [ "$deb_local_mirror" == "" ]; then
+  deb_local_mirror=$deb_mirror  
+fi
+
+image=""
+
+
+if [ $EUID -ne 0 ]; then
+  echo "this tool must be run as root"
+  exit 1
+fi
+
+if ! [ -b $device ]; then
+  echo "$device is not a block device"
+  exit 1
+fi
+
+if [ "$device" == "" ]; then
+  echo "no block device given, just creating an image"
+  mkdir -p $buildenv
+  image="${buildenv}/rpi_basic_${deb_release}_${mydate}.img"
+  dd if=/dev/zero of=$image bs=1MB count=1000
+  device=`losetup -f --show $image`
+  echo "image $image created and mounted as $device"
+else
+  dd if=/dev/zero of=$device bs=512 count=1
+fi
+
+parted -s ${device} mklabel msdos
+parted -s ${device} mkpart primary fat16 0 $bootsize
+parted -s ${device} mkpart primary ext2 $bootsize 100%
+
+if [ "$image" != "" ]; then
+  losetup -d $device
+  device=`kpartx -va $image | sed -E 's/.*(loop[0-9])p.*/\1/g' | head -1`
+  device="/dev/mapper/${device}"
+  bootp=${device}p1
+  rootp=${device}p2
+else
+  if ! [ -b ${device}1 ]; then
+    bootp=${device}p1
+    rootp=${device}p2
+    if ! [ -b ${bootp} ]; then
+      echo "uh, oh, something went wrong, can't find bootpartition neither as ${device}1 nor as ${device}p1, exiting."
+      exit 1
+    fi
+  else
+    bootp=${device}1
+    rootp=${device}2
+  fi  
+fi
+
+mkfs.vfat $bootp
+mkfs.ext4 $rootp
+
+mkdir -p $rootfs
+
+mount $rootp $rootfs
+
+cd $rootfs
+
+debootstrap --variant=minbase --foreign --arch armel $deb_release $rootfs $deb_local_mirror
+cp /usr/bin/qemu-arm-static usr/bin/
+chroot $rootfs /debootstrap/debootstrap --second-stage
+
+mount $bootp $bootfs
+
+cat <<EOF > etc/apt/sources.list
+deb $deb_local_mirror $deb_release main contrib non-free
+deb http://www.reinholdtsen.name/freedombox/ wheezy main
+EOF
+
+echo "dwc_otg.lpm_enable=0 console=ttyAMA0,115200 kgdboc=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 rootwait" > boot/cmdline.txt
+
+echo "proc            /proc           proc    defaults        0       0
+/dev/mmcblk0p1  /boot           vfat    defaults        0       0
+" > etc/fstab
+
+echo "raspberrypi" > etc/hostname
+
+echo "auto lo
+iface lo inet loopback
+" > etc/network/interfaces
+
+echo "vchiq
+snd_bcm2835
+" >> etc/modules
+
+echo "#!/bin/bash
+apt-get update
+
+# Install non-free binary blob needed to boot Raspberry Pi
+apt-get -y install git-core binutils ca-certificates wget kmod
+wget http://goo.gl/1BOfJ -O /usr/bin/rpi-update
+chmod +x /usr/bin/rpi-update
+mkdir -p /lib/modules/3.1.9+
+touch /boot/start.elf
+rpi-update
+
+wget http://www.reinholdtsen.name/freedombox/BE1A583D.asc -O - | apt-key add -
+apt-get update
+apt-get install -y freedombox-reinholdtsen-archive-keyring
+
+# Install the tools needed to become a mesh node
+apt-get -y install \
+  bootlogd \
+  ntp \
+  udev \
+  psmisc \
+  firmware-ralink \
+  rfkill \
+  batctl \
+  wireless-tools \
+  bridge-utils
+# Separate install, as this package currently is missing
+apt-get -y install meshfx-node
+
+echo \"root:raspberry\" | chpasswd
+
+#sed -i -e 's/KERNEL\!=\"eth\*|/KERNEL\!=\"/' /lib/udev/rules.d/75-persistent-net-generator.rules
+
+rm -f /etc/udev/rules.d/70-persistent-net.rules
+rm -f third-stage
+" > third-stage
+chmod +x third-stage
+chroot $rootfs /third-stage
+
+echo "#!/bin/bash
+apt-get update
+apt-get clean
+rm -f cleanup
+" > cleanup
+chmod +x cleanup
+chroot $rootfs /cleanup
+
+cd
+
+umount $bootp
+umount $rootp
+
+if [ "$image" != "" ]; then
+  kpartx -d $image
+  echo "created image $image"
+fi
+
+
+echo "done."
