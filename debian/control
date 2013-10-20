@@ -12,5 +12,6 @@ Depends: ${misc:Depends}
  , batctl
  , wireless-tools
  , bridge-utils 
-Description: Set up computer as meshfx-node
- Using batman-adv.
+Description: Set up computer as batman-adv mesh node.
+ Configure the first wifi network interface as a batman-adv mesh node
+ and connect it with bridge to the first ethernet interface if it exist.
