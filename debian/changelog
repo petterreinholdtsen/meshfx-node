@@ -1,5 +1,5 @@
 meshfx-node (0.0.1) UNRELEASED; urgency=low
 
-  * Initial version.
+  * Initial version, tested on Jessie.
 
  -- Petter Reinholdtsen <pere@debian.org>  Mon, 09 Sep 2013 19:50:35 +0200
