@@ -87,7 +87,9 @@ cd $rootfs
 
 # Used by rpi-update
 pkgs=git-core,binutils,ca-certificates,wget,kmod
-pkgs=$pkgs,bootlogd,udev,psmisc,ntp
+
+# Other packages useful to get a debuggable environment
+pkgs=$pkgs,bootlogd,udev,psmisc,ntp,vim-tiny
 
 debootstrap \
     --variant=minbase \
