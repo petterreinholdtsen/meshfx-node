@@ -7,8 +7,13 @@
 # you need at least
 # apt-get install binfmt-support qemu qemu-user-static debootstrap kpartx lvm2 dosfstools
 
+# Exit on first error
+set -e
+set -x
+
+ROOTPWD=raspberry
+
 deb_mirror="http://http.debian.net/debian"
-#deb_local_mirror="http://debian.kmp.or.at:3142/debian"
 
 bootsize="64MB"
 deb_release="jessie"
@@ -57,7 +62,7 @@ parted -s ${device} mkpart primary fat16 0 $bootsize
 parted -s ${device} mkpart primary ext2 $bootsize 100%
 
 if [ "$image" != "" ]; then
-  losetup -d $device
+  losetup -d $device || true
   device=`kpartx -va $image | sed -E 's/.*(loop[0-9])p.*/\1/g' | head -1`
   device="/dev/mapper/${device}"
   bootp=${device}p1
@@ -123,35 +128,44 @@ echo "vchiq
 snd_bcm2835
 " >> etc/modules
 
+chroot $rootfs apt-get update
+# Include non-free binary blob for various wifi card to get them working.
+# Not installed by debootstrap as it only handle packages in main.
+chroot $rootfs apt-get install -y atmel-firmware firmware-atheros \
+    firmware-brcm80211 firmware-intelwimax firmware-iwlwifi \
+    firmware-libertas firmware-linux firmware-ralink firmware-realtek \
+    prism2-usb-firmware-installer zd1211-firmware
+
+# Not installing firmware-ipw2x00 because it want license
+# confirmation and it is hard to give that for others.
+
 echo "#!/bin/bash
-apt-get update
-
-# Install non-free requirements for my wifi card
-apt-get install -y firmware-ralink
-
 # Install non-free binary blob needed to boot Raspberry Pi
 wget http://goo.gl/1BOfJ -O /usr/bin/rpi-update
 chmod +x /usr/bin/rpi-update
 mkdir -p /lib/modules/3.1.9+
 touch /boot/start.elf
 rpi-update
-
-wget http://www.reinholdtsen.name/freedombox/BE1A583D.asc -O - | apt-key add -
-apt-get update
-apt-get install -y freedombox-reinholdtsen-archive-keyring
-
-# Install the tools needed to become a mesh node.
-apt-get -y install meshfx-node
-
-echo \"root:raspberry\" | chpasswd
-
-#sed -i -e 's/KERNEL\!=\"eth\*|/KERNEL\!=\"/' /lib/udev/rules.d/75-persistent-net-generator.rules
-
-rm -f /etc/udev/rules.d/70-persistent-net.rules
 rm -f third-stage
 " > third-stage
 chmod +x third-stage
 chroot $rootfs /third-stage
+
+#sed -i -e 's/KERNEL\!=\"eth\*|/KERNEL\!=\"/' $rootfs/lib/udev/rules.d/75-persistent-net-generator.rules
+
+rm -f $rootfs/etc/udev/rules.d/70-persistent-net.rules
+
+if [ "$ROOTPWD" ] ; then
+    echo "root:$ROOTPWD" | chroot $rootfs chpasswd
+fi
+
+# Install meshfx-node from external repository
+wget http://www.reinholdtsen.name/freedombox/BE1A583D.asc -O - | \
+    chroot $rootfs apt-key add -
+chroot $rootfs apt-get update
+chroot $rootfs apt-get install -y freedombox-reinholdtsen-archive-keyring
+# Install the tools needed to become a mesh node.
+chroot $rootfs apt-get -y install meshfx-node
 
 chroot $rootfs apt-get update
 chroot $rootfs apt-get clean
