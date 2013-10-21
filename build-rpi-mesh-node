@@ -23,7 +23,7 @@ buildenv="/root/rpi"
 rootfs="${buildenv}/rootfs"
 bootfs="${rootfs}/boot"
 
-mydate=`date +%Y%m%d`
+mydate=$(date +%Y%m%d)
 
 exec < /dev/null
 LC_ALL=C
@@ -129,6 +129,7 @@ snd_bcm2835
 " >> etc/modules
 
 chroot $rootfs apt-get update
+
 # Include non-free binary blob for various wifi card to get them working.
 # Not installed by debootstrap as it only handle packages in main.
 chroot $rootfs apt-get install -y atmel-firmware firmware-atheros \
@@ -139,17 +140,12 @@ chroot $rootfs apt-get install -y atmel-firmware firmware-atheros \
 # Not installing firmware-ipw2x00 because it want license
 # confirmation and it is hard to give that for others.
 
-echo "#!/bin/bash
 # Install non-free binary blob needed to boot Raspberry Pi
-wget http://goo.gl/1BOfJ -O /usr/bin/rpi-update
-chmod +x /usr/bin/rpi-update
-mkdir -p /lib/modules/3.1.9+
-touch /boot/start.elf
-rpi-update
-rm -f third-stage
-" > third-stage
-chmod +x third-stage
-chroot $rootfs /third-stage
+wget http://goo.gl/1BOfJ -O $rootfs/usr/bin/rpi-update
+chmod +x $rootfs/usr/bin/rpi-update
+mkdir -p $rootfs/lib/modules/3.1.9+
+touch $rootfs/boot/start.elf
+chroot $rootfs rpi-update
 
 #sed -i -e 's/KERNEL\!=\"eth\*|/KERNEL\!=\"/' $rootfs/lib/udev/rules.d/75-persistent-net-generator.rules
 
