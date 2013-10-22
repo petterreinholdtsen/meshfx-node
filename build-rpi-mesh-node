@@ -93,8 +93,11 @@ cd $rootfs
 # Used by rpi-update
 pkgs=git-core,binutils,ca-certificates,wget,kmod
 
+# Stuff needed for the machine to work well
+pkgs=$pkgs,udev,ntp
+
 # Other packages useful to get a debuggable environment
-pkgs=$pkgs,bootlogd,udev,psmisc,ntp,vim-tiny
+pkgs=$pkgs,psmisc,bootlogd,tcpdump,iputils-ping,iftop,vim-tiny
 
 debootstrap \
     --variant=minbase \
