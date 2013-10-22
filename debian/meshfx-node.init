@@ -81,6 +81,7 @@ start() {
 	brctl addbr $BRIDGE
 	brctl addif $BRIDGE bat0
 	brctl addif $BRIDGE $EIFACE
+	ifconfig $BRIDGE up
     fi
 }
 
@@ -105,6 +106,7 @@ stop() {
     batctl if del $IFACE
     rmmod batman-adv
     ifconfig $IFACE mtu 1500
+    ifconfig $IFACE down
     iwconfig $IFACE mode managed
 
     $NETWORKMANAGER restart
