@@ -1,11 +1,11 @@
-meshfx-node (0.0.2) UNRELEASED; urgency=low
+meshfx-node (0.0.2) wheezy; urgency=low
 
   * Make init.d script more robust, and make sure to bring up bridge
     during boot.
   * Add more packages to the Raspberry Pi image to make debugging
     easier.
 
- -- Petter Reinholdtsen <pere@debian.org>  Tue, 22 Oct 2013 21:09:26 +0200
+ -- Petter Reinholdtsen <pere@debian.org>  Tue, 22 Oct 2013 21:10:46 +0200
 
 meshfx-node (0.0.1) wheezy; urgency=low
 
