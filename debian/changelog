@@ -1,3 +1,10 @@
+meshfx-node (0.0.3) UNRELEASED; urgency=low
+
+  * Cut waiting time in half (10->5s) after stopping network manager.
+  * Make sure bridge is taken down before removing it.
+
+ -- Petter Reinholdtsen <pere@debian.org>  Thu, 24 Oct 2013 22:12:45 +0200
+
 meshfx-node (0.0.2) wheezy; urgency=low
 
   * Make init.d script more robust, and make sure to bring up bridge
