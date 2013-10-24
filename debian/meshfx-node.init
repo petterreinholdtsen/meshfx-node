@@ -60,7 +60,7 @@ start() {
     fi
     echo "info: enabling batman-adv mesh network $ESSID on $IFACE"
     $NETWORKMANAGER stop
-    sleep 10
+    sleep 5
 
     # Might have to re-enable wifi
     rfkill unblock $(rfkill list|awk -F: '/phy/ {print $1}') || true
@@ -93,15 +93,12 @@ stop() {
     if [ "$EIFACE" ] ; then
 	brctl delif $BRIDGE bat0
 	brctl delif $BRIDGE $EIFACE
+	ifconfig $BRIDGE down || true
 	brctl delbr $BRIDGE
 	ifconfig $EIFACE down -promisc
     fi
 
     ifconfig bat0 down -promisc
-
-    if [ "$EIFACE" ] ; then
-	ifconfig $BRIDGE down || true
-    fi
 
     batctl if del $IFACE
     rmmod batman-adv
