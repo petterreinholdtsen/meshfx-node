@@ -23,6 +23,9 @@ pkgs="git-core binutils ca-certificates wget kmod"
 # Stuff needed for the machine to work well
 pkgs="$pkgs udev"
 
+# Stuff needed by debootstrap (need /etc/hosts)
+pkgs="$pkgs netbase"
+
 # Useful firmware packages to get free hardware working
 pkgs="$pkgs firmware-linux-free"
 
