@@ -7,177 +7,47 @@
 # you need at least
 # apt-get install binfmt-support qemu qemu-user-static debootstrap kpartx lvm2 dosfstools
 
-# Exit on first error
-set -e
-set -x
-
-ROOTPWD=raspberry
-
-deb_mirror="http://http.debian.net/debian"
-
-bootsize="64MB"
-deb_release="jessie"
-
-device=$1
-buildenv="/root/rpi"
-rootfs="${buildenv}/rootfs"
-bootfs="${rootfs}/boot"
-
-mydate=$(date +%Y%m%d)
-
-exec < /dev/null
-LC_ALL=C
-export LC_ALL
-
-if [ "$deb_local_mirror" == "" ]; then
-  deb_local_mirror=$deb_mirror  
-fi
-
-image=""
-
-
 if [ $EUID -ne 0 ]; then
   echo "this tool must be run as root"
   exit 1
 fi
 
-if ! [ -b $device ]; then
-  echo "$device is not a block device"
-  exit 1
-fi
-
-if [ "$device" == "" ]; then
-  echo "no block device given, just creating an image"
-  mkdir -p $buildenv
-  image="${buildenv}/rpi_basic_${deb_release}_${mydate}.img"
-  dd if=/dev/zero of=$image bs=1MB count=1000
-  device=`losetup -f --show $image`
-  echo "image $image created and mounted as $device"
-else
-  dd if=/dev/zero of=$device bs=512 count=1
-fi
-
-parted -s ${device} mklabel msdos
-parted -s ${device} mkpart primary fat16 0 $bootsize
-parted -s ${device} mkpart primary ext2 $bootsize 100%
-
-if [ "$image" != "" ]; then
-  losetup -d $device || true
-  device=`kpartx -va $image | sed -E 's/.*(loop[0-9])p.*/\1/g' | head -1`
-  device="/dev/mapper/${device}"
-  bootp=${device}p1
-  rootp=${device}p2
-else
-  if ! [ -b ${device}1 ]; then
-    bootp=${device}p1
-    rootp=${device}p2
-    if ! [ -b ${bootp} ]; then
-      echo "uh, oh, something went wrong, can't find bootpartition neither as ${device}1 nor as ${device}p1, exiting."
-      exit 1
-    fi
-  else
-    bootp=${device}1
-    rootp=${device}2
-  fi  
-fi
-
-mkfs.vfat $bootp
-mkfs.ext4 $rootp
-
-mkdir -p $rootfs
-
-mount $rootp $rootfs
-
-cd $rootfs
+# Fetch vmdebootstrap version with foreign and separate /boot support
+wget https://gitorious.org/vmdebootstrap/vmdebootstrap/raw/HEAD:vmdebootstrap \
+    -O vmdebootstrap
+chmod a+rx vmdebootstrap
 
 # Used by rpi-update
-pkgs=git-core,binutils,ca-certificates,wget,kmod
+pkgs="git-core binutils ca-certificates wget kmod"
 
 # Stuff needed for the machine to work well
-pkgs=$pkgs,udev,ntp
+pkgs="$pkgs udev"
+
+# Useful firmware packages to get free hardware working
+pkgs="$pkgs firmware-linux-free"
 
 # Other packages useful to get a debuggable environment
-pkgs=$pkgs,psmisc,bootlogd,tcpdump,iputils-ping,iftop,vim-tiny
+pkgs="$pkgs psmisc bootlogd tcpdump iputils-ping iftop vim-tiny"
 
-debootstrap \
-    --variant=minbase \
-    --foreign \
+for p in $pkgs ; do
+    options="$options --package $p"
+done
+
+./vmdebootstrap \
+    --variant minbase \
     --arch armel \
-    --include=$pkgs \
-    $deb_release $rootfs $deb_local_mirror
-cp /usr/bin/qemu-arm-static usr/bin/
-chroot $rootfs /debootstrap/debootstrap --second-stage
-
-mount $bootp $bootfs
-
-cat <<EOF > etc/apt/sources.list
-deb $deb_local_mirror $deb_release main contrib non-free
-deb http://www.reinholdtsen.name/freedombox/ wheezy main
-EOF
-
-echo "dwc_otg.lpm_enable=0 console=ttyAMA0,115200 kgdboc=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 rootwait" > boot/cmdline.txt
-
-echo "proc            /proc           proc    defaults        0       0
-/dev/mmcblk0p1  /boot           vfat    defaults        0       0
-" > etc/fstab
-
-echo "raspberrypi" > etc/hostname
-
-echo "auto lo
-iface lo inet loopback
-" > etc/network/interfaces
-
-echo "vchiq
-snd_bcm2835
-" >> etc/modules
-
-chroot $rootfs apt-get update
-
-# Include non-free binary blob for various wifi card to get them working.
-# Not installed by debootstrap as it only handle packages in main.
-chroot $rootfs apt-get install -y atmel-firmware firmware-atheros \
-    firmware-brcm80211 firmware-intelwimax firmware-iwlwifi \
-    firmware-libertas firmware-linux firmware-ralink firmware-realtek \
-    prism2-usb-firmware-installer zd1211-firmware
-
-# Not installing firmware-ipw2x00 because it want license
-# confirmation and it is hard to give that for others.
-
-# Install non-free binary blob needed to boot Raspberry Pi
-wget http://goo.gl/1BOfJ -O $rootfs/usr/bin/rpi-update
-chmod +x $rootfs/usr/bin/rpi-update
-mkdir -p $rootfs/lib/modules/3.1.9+
-touch $rootfs/boot/start.elf
-chroot $rootfs rpi-update
-
-#sed -i -e 's/KERNEL\!=\"eth\*|/KERNEL\!=\"/' $rootfs/lib/udev/rules.d/75-persistent-net-generator.rules
-
-rm -f $rootfs/etc/udev/rules.d/70-persistent-net.rules
-
-if [ "$ROOTPWD" ] ; then
-    echo "root:$ROOTPWD" | chroot $rootfs chpasswd
-fi
-
-# Install meshfx-node from external repository
-wget http://www.reinholdtsen.name/freedombox/BE1A583D.asc -O - | \
-    chroot $rootfs apt-key add -
-chroot $rootfs apt-get update
-chroot $rootfs apt-get install -y freedombox-reinholdtsen-archive-keyring
-# Install the tools needed to become a mesh node.
-chroot $rootfs apt-get -y install meshfx-node
-
-chroot $rootfs apt-get update
-chroot $rootfs apt-get clean
-
-cd
-
-umount $bootp
-umount $rootp
-
-if [ "$image" != "" ]; then
-  kpartx -d $image
-  echo "created image $image"
-fi
-
-
-echo "done."
+    --distribution jessie \
+    --mirror http://http.debian.net/debian \
+    --image test.img \
+    --size 600M \
+    --bootsize 64M \
+    --boottype vfat \
+    --log-level debug \
+    --verbose \
+    --no-kernel \
+    --no-extlinux \
+    --root-password raspberry \
+    --hostname raspberrypi \
+    --foreign /usr/bin/qemu-arm-static \
+    --customize `pwd`/build-rpi-mesh-node-customize \
+    $options
