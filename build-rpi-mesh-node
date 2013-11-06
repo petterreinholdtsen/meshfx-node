@@ -7,17 +7,21 @@
 # you need at least
 # apt-get install binfmt-support qemu qemu-user-static debootstrap kpartx lvm2 dosfstools
 
+set -e
+
 if [ $EUID -ne 0 ]; then
   echo "this tool must be run as root"
   exit 1
 fi
 
+basedir=$(dirname $0)
+
 apt-get install python-cliapp qemu-user-static kpartx
 
 # Fetch vmdebootstrap version with foreign and separate /boot support
 wget https://gitorious.org/vmdebootstrap/vmdebootstrap/raw/HEAD:vmdebootstrap \
-    -O vmdebootstrap
-chmod a+rx vmdebootstrap
+    -O $basedir/vmdebootstrap
+chmod a+rx $basedir/vmdebootstrap
 
 # Used by rpi-update
 pkgs="git-core binutils ca-certificates wget kmod"
@@ -38,7 +42,7 @@ for p in $pkgs ; do
     options="$options --package $p"
 done
 
-./vmdebootstrap \
+$basedir/vmdebootstrap \
     --log=debug.log \
     --log-level=debug \
     --variant minbase \
@@ -56,5 +60,5 @@ done
     --root-password raspberry \
     --hostname raspberrypi \
     --foreign /usr/bin/qemu-arm-static \
-    --customize `pwd`/build-rpi-mesh-node-customize \
+    --customize $basedir/build-rpi-mesh-node-customize \
     $options
