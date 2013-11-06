@@ -12,6 +12,8 @@ if [ $EUID -ne 0 ]; then
   exit 1
 fi
 
+apt-get install python-cliapp qemu-user-static kpartx
+
 # Fetch vmdebootstrap version with foreign and separate /boot support
 wget https://gitorious.org/vmdebootstrap/vmdebootstrap/raw/HEAD:vmdebootstrap \
     -O vmdebootstrap
@@ -37,6 +39,8 @@ for p in $pkgs ; do
 done
 
 ./vmdebootstrap \
+    --log=debug.log \
+    --log-level=debug \
     --variant minbase \
     --arch armel \
     --distribution jessie \
