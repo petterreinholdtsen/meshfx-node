@@ -48,7 +48,7 @@ $basedir/vmdebootstrap \
     --variant minbase \
     --arch armel \
     --distribution jessie \
-    --mirror http://cdn.debian.net/debian \
+    --mirror http://http.debian.net/debian \
     --image test.img \
     --size 600M \
     --bootsize 64M \
