@@ -4,9 +4,6 @@
 
 # Based on https://kmp.or.at/~klaus/raspberry/build_rpi_sd_card.sh
 
-# you need at least
-apt-get -y install binfmt-support qemu qemu-user-static debootstrap kpartx lvm2 dosfstools
-
 set -e
 
 if [ $EUID -ne 0 ]; then
@@ -16,7 +13,7 @@ fi
 
 basedir=$(dirname $0)
 
-apt-get -y install python-cliapp qemu-user-static kpartx parted mbr
+apt-get install binfmt-support python-cliapp qemu-user-static debootstrap kpartx parted mbr
 
 # Fetch vmdebootstrap version with foreign and separate /boot support
 wget https://gitorious.org/vmdebootstrap/vmdebootstrap/raw/HEAD:vmdebootstrap \
