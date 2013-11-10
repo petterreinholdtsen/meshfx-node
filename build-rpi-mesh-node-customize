@@ -42,11 +42,12 @@ chroot $rootdir apt-get install -y atmel-firmware firmware-atheros \
 
 chroot $rootdir apt-get clean
 
-# Install non-free binary blob needed to boot Raspberry Pi.  This pull
-# in a kernel too.  
+set -x
+
+# Install non-free binary blob needed to boot Raspberry Pi.  This
+# install a kernel somewhere too.
 wget https://raw.github.com/Hexxeh/rpi-update/master/rpi-update \
     -O $rootdir/usr/bin/rpi-update
-chroot $rootdir chmod +x /usr/bin/rpi-update
-mkdir -p $rootdir/lib/modules/3.1.9+
-touch $rootdir/boot/start.elf
+chmod a+x $rootdir/usr/bin/rpi-update
+mkdir -p $rootdir/lib/modules
 chroot $rootdir rpi-update > $rootdir/root/rpi-update.log
