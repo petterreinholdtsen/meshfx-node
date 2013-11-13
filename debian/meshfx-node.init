@@ -76,6 +76,17 @@ start() {
     batctl if add $IFACE
     ifconfig $IFACE up
     ifconfig bat0 up promisc
+
+    #Use persistent HWAddr
+    ether_new=$(ifconfig eth0 | grep HWaddr | sed -e 's/.*HWaddr //')
+    if [ ! -f /var/tmp/bat0 ]
+    then
+      echo "${ether_new}" > /var/tmp/bat0
+    else
+      ether=$(cat /var/tmp/bat0)
+      ifconfig bat0 hw ether ${ether}
+    fi
+
     if [ "$EIFACE" ] ; then
 	ifconfig $EIFACE up promisc
 	brctl addbr $BRIDGE
