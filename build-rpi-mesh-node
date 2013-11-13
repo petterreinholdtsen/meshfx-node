@@ -12,13 +12,18 @@ if [ $EUID -ne 0 ]; then
 fi
 
 basedir=$(dirname $0)
+builddir=$basedir/build
+
+if [[ ! -e $builddir ]]; then
+  mkdir $builddir
+fi
 
 apt-get install binfmt-support python-cliapp qemu-user-static qemu-utils debootstrap kpartx parted mbr
 
 # Fetch vmdebootstrap version with foreign and separate /boot support
 wget https://gitorious.org/vmdebootstrap/vmdebootstrap/raw/HEAD:vmdebootstrap \
-    -O $basedir/vmdebootstrap
-chmod a+rx $basedir/vmdebootstrap
+    -O $builddir/vmdebootstrap
+chmod a+rx $builddir/vmdebootstrap
 
 # Used by rpi-update
 pkgs="git-core binutils ca-certificates wget kmod"
@@ -39,14 +44,14 @@ for p in $pkgs ; do
     options="$options --package $p"
 done
 
-$basedir/vmdebootstrap \
-    --log=debug.log \
+$builddir/vmdebootstrap \
+    --log=$builddir/debug.log \
     --log-level=debug \
     --variant minbase \
     --arch armel \
     --distribution jessie \
     --mirror http://http.debian.net/debian \
-    --image test.img \
+    --image $builddir/test.img \
     --size 600M \
     --bootsize 64M \
     --boottype vfat \
