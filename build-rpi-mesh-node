@@ -13,7 +13,7 @@ fi
 
 basedir=$(dirname $0)
 
-apt-get install binfmt-support python-cliapp qemu-user-static debootstrap kpartx parted mbr
+apt-get install binfmt-support python-cliapp qemu-user-static qemu-utils debootstrap kpartx parted mbr
 
 # Fetch vmdebootstrap version with foreign and separate /boot support
 wget https://gitorious.org/vmdebootstrap/vmdebootstrap/raw/HEAD:vmdebootstrap \
