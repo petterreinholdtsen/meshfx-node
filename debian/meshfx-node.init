@@ -79,11 +79,12 @@ start() {
 
     #Use persistent HWAddr
     ether_new=$(ifconfig eth0 | grep HWaddr | sed -e 's/.*HWaddr //')
-    if [ ! -f /var/tmp/bat0 ]
+    if [ ! -f /var/lib/meshfx-node/bat0 ]
     then
-      echo "${ether_new}" > /var/tmp/bat0
+      mkdir /var/lib/meshfx-node
+      echo "${ether_new}" > /var/lib/meshfx-node/bat0
     else
-      ether=$(cat /var/tmp/bat0)
+      ether=$(cat /var/lib/meshfx-node/bat0)
       ifconfig bat0 hw ether ${ether}
     fi
 
