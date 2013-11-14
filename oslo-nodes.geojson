@@ -1,17 +1,97 @@
-{ "type": "MultiPoint",
-  "coordinates":
-  [
-   [10.71102, 59.92485],
-   [10.740001, 59.933524],
-   [10.75087, 59.91456],
-   [10.75206, 59.91911],
-   [10.76032, 59.92461],
-   [10.77247, 59.95047],
-   [10.77278, 59.95092],
-   [10.78241, 59.92582],
-   [10.7867576, 59.9237515],
-   [10.787412, 59.904047],
-   [10.789682, 59.932000],
-   [10.84864, 60.10778]
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-symbol": "oil-well",
+        "marker-color": "FF0000",
+        "name": "An oil well"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [10.71102, 59.92485]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [10.75087, 59.91456]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [10.75206, 59.91911]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [10.76032, 59.92461]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [10.77247, 59.95047]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [10.77278, 59.95092]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [10.78241, 59.92582]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [10.7867576, 59.9237515]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [10.787412, 59.904047]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [10.789682, 59.932000]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [10.84864, 60.10778]
+      }
+    }
   ]
 }
