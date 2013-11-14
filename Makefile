@@ -1,4 +1,4 @@
-all: oslo-nodes.geojson
+all: oslo-nodes.geojson sandnes-nodes.geojson
 
 %.geojson: %.csv
 	sort $^ | perl \
