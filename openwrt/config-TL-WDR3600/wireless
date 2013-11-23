@@ -16,11 +16,17 @@ config wifi-device  radio0
 config wifi-iface 'wmesh0'
         option device   radio0
         option ifname 'adhoc0'
-        option network 'mesh'
         option encryption 'none'
         option mode 'adhoc'
         option bssid '02:BA:00:00:00:01'
         option ssid 'dugnadsnett.no'
+
+config wifi-iface accesspoint0
+        option device   radio0
+        option ifname   wifiap0
+        option mode     ap
+        option ssid     openwireless.org
+        option encryption none
 
 config wifi-device  radio1
         option type     mac80211
@@ -40,8 +46,14 @@ config wifi-device  radio1
 config wifi-iface 'wmesh1'
         option device   radio1
         option ifname 'adhoc1'
-        option network 'mesh'
         option encryption 'none'
         option mode 'adhoc'
         option bssid '02:BA:00:00:00:01'
         option ssid 'dugnadsnett.no'
+
+config wifi-iface accesspoint1
+        option device   radio1
+        option ifname   wifiap1
+        option mode     ap
+        option ssid     openwireless.org
+        option encryption none

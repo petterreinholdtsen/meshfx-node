@@ -36,8 +36,9 @@ config interface 'mesh'
         option proto 'batadv'
         option mesh 'bat0'
 
-config interface 'bat0'
-        option ifname 'bat0'
+config interface dugnadsnett
+        option type   bridge
+        option ifname "bat0 wifiap0 wifiap1"
         option proto 'static'
         option netmask '255.0.0.0'
         option ipaddr '10.9.8.7'
