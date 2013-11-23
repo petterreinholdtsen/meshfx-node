@@ -1,0 +1,13 @@
+Setup for openwrt on TP-Link WDR3600 as a dugnadsnett.no mesh node
+==================================================================
+
+First, install openwrt on the machine using the recipe available from 
+<URL: http://wiki.openwrt.org/toh/tp-link/tl-wdr3600 >
+
+Then, install the kmod-batman-adv package using "opkg install kmod-batman-adv".
+
+Next, copy the provided files network, wireless and batman-adv into
+/etc/config/ in the openwrt installation.
+
+Last, modify the IP address 10.11.12.13 to some unique number.  IPv6
+is not yet working with this setup.
