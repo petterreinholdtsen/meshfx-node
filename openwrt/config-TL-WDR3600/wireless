@@ -20,7 +20,7 @@ config wifi-iface 'wmesh0'
         option encryption 'none'
         option mode 'adhoc'
         option bssid '02:BA:00:00:00:01'
-        option ssid 'meshfx@hackeriet'
+        option ssid 'dugnadsnett.no'
 
 config wifi-device  radio1
         option type     mac80211
@@ -44,4 +44,4 @@ config wifi-iface 'wmesh1'
         option encryption 'none'
         option mode 'adhoc'
         option bssid '02:BA:00:00:00:01'
-        option ssid 'meshfx@hackeriet'
+        option ssid 'dugnadsnett.no'
