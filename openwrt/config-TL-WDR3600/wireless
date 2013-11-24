@@ -24,6 +24,7 @@ config wifi-iface 'wmesh0'
 config wifi-iface accesspoint0
         option device   radio0
         option ifname   wifiap0
+        option network  dugnadsnett
         option mode     ap
         option ssid     openwireless.org
         option encryption none
@@ -54,6 +55,7 @@ config wifi-iface 'wmesh1'
 config wifi-iface accesspoint1
         option device   radio1
         option ifname   wifiap1
+        option network  dugnadsnett
         option mode     ap
         option ssid     openwireless.org
         option encryption none
