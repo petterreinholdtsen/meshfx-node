@@ -1,32 +1,383 @@
-{ "type": "MultiPoint",
-  "coordinates":
+{ "type": "FeatureCollection",
+  "features":
   [
-   [10.71031, 59.91649],
-   [10.71102, 59.92485],
-   [10.740001, 59.933524],
-   [10.75087, 59.91456],
-   [10.75206, 59.91911],
-   [10.75682, 59.91527],
-   [10.76032, 59.92461],
-   [10.76037, 59.91595],
-   [10.7643699, 59.9112805],
-   [10.76762, 59.94164],
-   [10.77247, 59.95047],
-   [10.77278, 59.95092],
-   [10.77281, 59.95068],
-   [10.77686, 59.94341],
-   [10.78241, 59.92582],
-   [10.78271, 59.91499],
-   [10.7867576, 59.9237515],
-   [10.787412, 59.904047],
-   [10.789682, 59.932000],
-   [10.82750, 59.85630],
-   [10.84172, 59.91830],
-   [10.84864, 60.10778],
-   [10.850001, 59.947245],
-   [10.86792, 59.96304],
-   [10.89199, 59.95741],
-   [10.89909, 59.96735],
-   [10.90595, 59.97024]
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "head",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-16",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.710310, 59.916490]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "capitol",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-13",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.711020, 59.924850]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "kjetilho",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-14",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.740001, 59.933524]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "toresbe",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-13",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.750870, 59.914560]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "Hackeriet",
+         "MAC"      : "unknown",
+         "last-seen": "2012-06-01?",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.752060, 59.919110]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "phed",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-19",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.756820, 59.915270]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "mortenmk",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-13",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.760320, 59.924610]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "Tvilling",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-16",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.760370, 59.915950]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "knuty",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-25",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.764370, 59.911280]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "effbiai",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-19",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.767620, 59.941640]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "pere",
+         "MAC"      : "10:fe:ed:84:73:63",
+         "last-seen": "2013-11-26",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.772470, 59.950470]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "hgb",
+         "MAC"      : "10:fe:ed:84:64:a5",
+         "last-seen": "2013-11-26",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.772780, 59.950920]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "pere",
+         "MAC"      : "64:66:b3:42:68:42",
+         "last-seen": "2013-11-26",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.772810, 59.950680]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "sjn",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-25",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.776860, 59.943410]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "dash",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-13",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.782410, 59.925820]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "Tvilling",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-16",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.782710, 59.914990]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "oka",
+         "MAC"      : "20:10:7a:15:21:09",
+         "last-seen": "2013-11-12",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.786758, 59.923752]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "BFG1981",
+         "MAC"      : "unknown",
+         "last-seen": "2013-11-11",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.787412, 59.904047]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "kid",
+         "MAC"      : "unknown",
+         "last-seen": "2013-11-26",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.789682, 59.932000]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "OsteHovel",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-16",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.827500, 59.856300]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "martbo",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-16",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.841720, 59.918300]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "espegro",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-13",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.848640, 60.107780]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "olekvi",
+         "MAC"      : "00:13:ef:d0:0e:f0",
+         "last-seen": "2013-11-16",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.850001, 59.947245]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "ambientsound",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-16",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.867920, 59.963040]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "tobixen",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-26",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.891990, 59.957410]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "des",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-15",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.899090, 59.967350]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "morjo via effbiai",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-19",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.905950, 59.970240]
+         }
+    }
   ]
 }
