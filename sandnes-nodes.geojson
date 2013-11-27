@@ -1,7 +1,33 @@
-{ "type": "MultiPoint",
-  "coordinates":
+{ "type": "FeatureCollection",
+  "features":
   [
-   [5.69238, 58.94915],
-   [5.74254, 58.86609]
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "Unhammer",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-14",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [5.742540, 58.866090]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "kpolberg",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-18",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [5.692380, 58.949150]
+         }
+    }
   ]
 }
