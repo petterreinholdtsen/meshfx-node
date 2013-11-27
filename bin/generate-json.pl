@@ -26,7 +26,10 @@ while (<>) {
        {
          "name"     : "%s",
          "MAC"      : "%s",
-         "last-seen": "%s"
+         "last-seen": "%s",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000",
+         "name": "An oil well"
        },
        "geometry":
          { "type" : "Point",
