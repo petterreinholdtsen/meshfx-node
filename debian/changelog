@@ -1,11 +1,11 @@
-meshfx-node (0.0.3) UNRELEASED; urgency=low
+meshfx-node (0.0.3) wheezy; urgency=low
 
   * Cut waiting time in half (10->5s) after stopping network manager.
   * Make sure bridge is taken down before removing it.
   * Change ESSID from meshfx@hackeriet to dugnadsnett.no to use the DNS
     name of the project web page.
 
- -- Petter Reinholdtsen <pere@debian.org>  Thu, 24 Oct 2013 22:12:45 +0200
+ -- Petter Reinholdtsen <pere@debian.org>  Wed, 27 Nov 2013 22:26:52 +0100
 
 meshfx-node (0.0.2) wheezy; urgency=low
 
