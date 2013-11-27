@@ -1,7 +1,8 @@
 meshfx-node
 ===========
 
-Mesh node setup using batman-adv.
+Mesh node setup using batman-adv.  This is used by the project
+Dugnadsnett for alle i Oslo, http://www.dugnadsnett.no/ .
 
 https://github.com/petterreinholdtsen/meshfx-node
 
@@ -15,4 +16,4 @@ map of the nodes can be seen by visiting
 https://github.com/petterreinholdtsen/meshfx-node/blob/master/oslo-nodes.geojson .
 
 To find the nearest node from a given geo-location, the web service
-available from http://flynor.net/mesh/oslo-nodes.php can be used.
+available from http://flynor.net/mesh/mesh.php can be used.
