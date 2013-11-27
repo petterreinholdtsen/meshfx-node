@@ -23,8 +23,8 @@
 # Mesh definition
 ESSID=dugnadsnett.no
 CELLID=02:BA:00:00:00:01
-CHANNEL=11
-FREQUENCY=2462
+CHANNEL=6
+FREQUENCY=2437
 
 # Ethernet bridge definition (bridged do bat0)
 BRIDGE=br-meshfx
