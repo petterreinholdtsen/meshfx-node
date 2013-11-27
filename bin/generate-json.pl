@@ -1,13 +1,16 @@
 #!/usr/bin/perl
 
+use warnings;
+use strict;
+
 print '{ "type": "FeatureCollection",
   "features":
   [
 ';
 
-$first = 1;
+my $first = 1;
 
-$header=<>;
+my $header=<>;
 
 while (<>) {
   if ($first) {
@@ -16,10 +19,9 @@ while (<>) {
   else {
     print ",\n";
   }
-  @elems = split /\t/;
+  my @elems = split /\t/;
   chomp($elems[4]);
 
- $elems[3];
   printf
 '    { "type": "Feature",
        "properties":
