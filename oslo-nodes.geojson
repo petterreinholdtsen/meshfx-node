@@ -4,6 +4,20 @@
     { "type": "Feature",
        "properties":
        {
+         "name"     : "viff",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-29",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.023650, 59.737030]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
          "name"     : "head",
          "MAC"      : "notyet",
          "last-seen": "2013-11-16",
@@ -75,8 +89,8 @@
        "properties":
        {
          "name"     : "Hackeriet",
-         "MAC"      : "unknown",
-         "last-seen": "2012-06-01?",
+         "MAC"      : "00:18:84:1b:78:11",
+         "last-seen": "2013-11-28",
          "marker-symbol": "oil-well",
          "marker-color": "FF0000"
        },
@@ -489,6 +503,20 @@
        "geometry":
          { "type" : "Point",
            "coordinates": [10.905950, 59.970240]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "Atluxity",
+         "MAC"      : "notyet",
+         "last-seen": "2013-11-29",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.915747, 59.941854]
          }
     }
   ]
