@@ -326,10 +326,9 @@
     { "type": "Feature",
        "properties":
        {
-         "name"     : "ior   2013-11-28
-",
+         "name"     : "ior",
          "MAC"      : "notyet",
-         "last-seen": "",
+         "last-seen": "2013-11-28",
          "marker-symbol": "oil-well",
          "marker-color": "FF0000"
        },
