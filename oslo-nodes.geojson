@@ -145,8 +145,8 @@
        "properties":
        {
          "name"     : "pere",
-         "MAC"      : "10:fe:ed:84:73:63",
-         "last-seen": "2013-11-26",
+         "MAC"      : "12:fe:ed:84:73:63",
+         "last-seen": "2013-11-27",
          "marker-symbol": "oil-well",
          "marker-color": "FF0000"
        },
@@ -160,7 +160,7 @@
        {
          "name"     : "hgb",
          "MAC"      : "10:fe:ed:84:64:a5",
-         "last-seen": "2013-11-26",
+         "last-seen": "2013-11-27",
          "marker-symbol": "oil-well",
          "marker-color": "FF0000"
        },
@@ -174,7 +174,7 @@
        {
          "name"     : "pere",
          "MAC"      : "64:66:b3:42:68:42",
-         "last-seen": "2013-11-26",
+         "last-seen": "2013-11-27",
          "marker-symbol": "oil-well",
          "marker-color": "FF0000"
        },
@@ -321,6 +321,21 @@
        "geometry":
          { "type" : "Point",
            "coordinates": [10.850001, 59.947245]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "ior   2013-11-28
+",
+         "MAC"      : "notyet",
+         "last-seen": "",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.853032, 59.886224]
          }
     },
     { "type": "Feature",
