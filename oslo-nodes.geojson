@@ -466,6 +466,34 @@
     { "type": "Feature",
        "properties":
        {
+         "name"     : "Malinux",
+         "MAC"      : "notyet",
+         "last-seen": "",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.871450, 59.922420]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "Malinux",
+         "MAC"      : "notyet",
+         "last-seen": "",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.875790, 59.962910]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
          "name"     : "tobixen",
          "MAC"      : "notyet",
          "last-seen": "2013-11-26",
