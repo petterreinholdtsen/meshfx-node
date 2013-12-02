@@ -1,6 +1,6 @@
 config wifi-device 'radio0'
         option type 'mac80211'
-        option channel '11'
+        option channel '6'
         option hwmode '11ng'
         option path 'platform/ar933x_wmac'
         option htmode 'HT20'
@@ -18,3 +18,11 @@ config wifi-iface 'wmesh'
         option mode 'adhoc'
         option bssid '02:BA:00:00:00:01'
         option ssid 'dugnadsnett.no'
+
+config wifi-iface accesspoint0
+        option device   radio0
+        option ifname   wifiap0
+        option network  dugnadsnett
+        option mode     ap
+        option ssid     openwireless.org
+        option encryption none
