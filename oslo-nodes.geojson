@@ -60,6 +60,20 @@
     { "type": "Feature",
        "properties":
        {
+         "name"     : "jarib",
+         "MAC"      : "notyet",
+         "last-seen": "2013-12-15",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.717990, 59.928860]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
          "name"     : "dragonfly",
          "MAC"      : "notyet",
          "last-seen": "2013-11-28",
@@ -111,6 +125,20 @@
        "geometry":
          { "type" : "Point",
            "coordinates": [10.752060, 59.919110]
+         }
+    },
+    { "type": "Feature",
+       "properties":
+       {
+         "name"     : "ponas",
+         "MAC"      : "notyet",
+         "last-seen": "2013-12-12",
+         "marker-symbol": "oil-well",
+         "marker-color": "FF0000"
+       },
+       "geometry":
+         { "type" : "Point",
+           "coordinates": [10.754058, 59.923243]
          }
     },
     { "type": "Feature",
