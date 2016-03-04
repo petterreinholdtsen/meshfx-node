@@ -11,6 +11,9 @@ if [ $EUID -ne 0 ]; then
   exit 1
 fi
 
+# Avoid problems caused by libpam-tmpdir 
+unset TMPDIR TEMP TEMPDIR TMP
+
 basedir=$(dirname $0)
 builddir=$basedir/build
 
@@ -18,12 +21,8 @@ if [[ ! -e $builddir ]]; then
   mkdir $builddir
 fi
 
-apt-get install binfmt-support python-cliapp qemu-user-static qemu-utils debootstrap kpartx parted mbr
-
-# Fetch vmdebootstrap version with foreign and separate /boot support
-wget https://gitorious.org/vmdebootstrap/vmdebootstrap/raw/HEAD:vmdebootstrap \
-    -O $builddir/vmdebootstrap
-chmod a+rx $builddir/vmdebootstrap
+apt-get install binfmt-support python-cliapp qemu-user-static \
+    qemu-utils debootstrap kpartx parted mbr vmdebootstrap
 
 # Used by rpi-update
 pkgs="git-core binutils ca-certificates wget kmod"
@@ -44,7 +43,7 @@ for p in $pkgs ; do
     options="$options --package $p"
 done
 
-$builddir/vmdebootstrap \
+vmdebootstrap \
     --log=$builddir/debug.log \
     --log-level=debug \
     --variant minbase \

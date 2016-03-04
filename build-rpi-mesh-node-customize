@@ -2,6 +2,7 @@
 
 # Exit on first error
 set -e
+set -x
 
 LC_ALL=C
 export LC_ALL
@@ -40,6 +41,12 @@ chroot $rootdir apt-get install -y atmel-firmware firmware-atheros \
 # Not installing firmware-ipw2x00 because it want license confirmation
 # and it is perhaps not ice to give that on behalf of others.
 
+# Include ifupdown too
+chroot $rootdir apt-get install -y ifupdown openssh-server tinc
+
+# rpi-update require some tools
+chroot $rootdir apt-get install -y curl binutils
+
 chroot $rootdir apt-get clean
 
 set -x
@@ -50,4 +57,4 @@ wget https://raw.github.com/Hexxeh/rpi-update/master/rpi-update \
     -O $rootdir/usr/bin/rpi-update
 chmod a+x $rootdir/usr/bin/rpi-update
 mkdir -p $rootdir/lib/modules
-chroot $rootdir rpi-update > $rootdir/root/rpi-update.log
+chroot $rootdir rpi-update | tee $rootdir/root/rpi-update.log
