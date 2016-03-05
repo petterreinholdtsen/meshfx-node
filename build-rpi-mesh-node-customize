@@ -9,6 +9,8 @@ export LC_ALL
 
 rootdir="$1"
 
+pkgs=""
+
 cd "$rootdir"
 
 cat <<EOF > etc/apt/sources.list
@@ -22,30 +24,51 @@ EOF
 wget http://www.reinholdtsen.name/freedombox/BE1A583D.asc -O - | \
     chroot $rootdir apt-key add -
 
+printf "#!/bin/sh\nexit 101\n" > $rootdir/usr/sbin/policy-rc.d
+chmod a+rx $rootdir/usr/sbin/policy-rc.d
+
 # Fetch package lists and GPG signatures
 chroot $rootdir apt-get update
 
+# Stuff needed by debootstrap (need /etc/hosts)
+pkgs="$pkgs netbase"
+
+# Stuff needed for the machine to work well
+pkgs="$pkgs udev"
+
 # Install meshfx-node from external repository
-chroot $rootdir apt-get install -y freedombox-reinholdtsen-archive-keyring
+pkgs="$pkgs freedombox-reinholdtsen-archive-keyring"
+
 # Install the tools needed to become a mesh node.
-chroot $rootdir apt-get -y install meshfx-node
+pkgs="$pkgs meshfx-node"
+
+# Useful firmware packages to get free hardware working
+pkgs="$pkgs firmware-linux-free"
 
 # Include non-free binary blob for various wifi card to get them
 # working out of the box.  Not installed by debootstrap as debootstrap
 # only handle packages in main.
-chroot $rootdir apt-get install -y atmel-firmware firmware-atheros \
+pkgs="$pkgs atmel-firmware firmware-atheros \
     firmware-brcm80211 firmware-intelwimax firmware-iwlwifi \
     firmware-libertas firmware-linux firmware-ralink firmware-realtek \
-    prism2-usb-firmware-installer zd1211-firmware
+    prism2-usb-firmware-installer zd1211-firmware"
 
 # Not installing firmware-ipw2x00 because it want license confirmation
-# and it is perhaps not ice to give that on behalf of others.
+# and it is perhaps not nice to give that on behalf of others.
 
-# Include ifupdown too
-chroot $rootdir apt-get install -y ifupdown openssh-server tinc
+# Include network too
+pkgs="$pkgs ifupdown openssh-server tinc"
 
 # rpi-update require some tools
-chroot $rootdir apt-get install -y curl binutils
+pkgs="$pkgs git-core binutils ca-certificates wget curl kmod"
+
+# Other packages useful to get a debuggable environment
+pkgs="$pkgs psmisc usbutils pciutils bootlogd tcpdump iputils-ping iftop vim-tiny"
+
+# Tools needed for becoming a mesh exit node via Tor
+pkgs="$pkgs tor dnsmasq"
+
+chroot $rootdir apt-get install -y $pkgs
 
 chroot $rootdir apt-get clean
 
@@ -58,3 +81,5 @@ wget https://raw.github.com/Hexxeh/rpi-update/master/rpi-update \
 chmod a+x $rootdir/usr/bin/rpi-update
 mkdir -p $rootdir/lib/modules
 chroot $rootdir rpi-update | tee $rootdir/root/rpi-update.log
+
+rm $rootdir/usr/sbin/policy-rc.d

@@ -16,6 +16,7 @@ unset TMPDIR TEMP TEMPDIR TMP
 
 basedir=$(dirname $0)
 builddir=$basedir/build
+options=
 
 if [[ ! -e $builddir ]]; then
   mkdir $builddir
@@ -24,34 +25,15 @@ fi
 apt-get install binfmt-support python-cliapp qemu-user-static \
     qemu-utils debootstrap kpartx parted mbr vmdebootstrap
 
-# Used by rpi-update
-pkgs="git-core binutils ca-certificates wget kmod"
-
-# Stuff needed for the machine to work well
-pkgs="$pkgs udev"
-
-# Stuff needed by debootstrap (need /etc/hosts)
-pkgs="$pkgs netbase"
-
-# Useful firmware packages to get free hardware working
-pkgs="$pkgs firmware-linux-free"
-
-# Other packages useful to get a debuggable environment
-pkgs="$pkgs psmisc bootlogd tcpdump iputils-ping iftop vim-tiny"
-
-for p in $pkgs ; do
-    options="$options --package $p"
-done
-
 vmdebootstrap \
     --log=$builddir/debug.log \
     --log-level=debug \
     --variant minbase \
     --arch armel \
     --distribution jessie \
-    --mirror http://http.debian.net/debian \
+    --mirror http://httpredir.debian.org/debian \
     --image $builddir/test.img \
-    --size 600M \
+    --size 800M \
     --bootsize 64M \
     --boottype vfat \
     --log-level debug \
